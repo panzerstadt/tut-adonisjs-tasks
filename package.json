@@ -5,8 +5,8 @@
   "description": "The fullstack application boilerplate for Adonisjs",
   "main": "index.js",
   "scripts": {
-    "serve": "node server.js",
-    "start": "adonis serve --dev",
+    "start": "node server.js",
+    "develop": "adonis serve --dev",
     "up": "docker-compose up",
     "stop": "docker-compose down",
     "test": "node ace test"
