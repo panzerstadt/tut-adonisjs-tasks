@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "node server.js",
-    "start": "docker-compose up && adonis serve --dev",
+    "start": "adonis serve --dev",
+    "up": "docker-compose up",
     "stop": "docker-compose down",
     "test": "node ace test"
   },

@@ -20,4 +20,7 @@ Route.on("/").render("welcome");
 
 Route.get("/task", "TaskController.index");
 Route.post("/task/tasks", "TaskController.store");
-Route.delete("/task/tasks:id", "TaskController.destroy");
+Route.delete("/task/tasks/:id", "TaskController.destroy");
+
+Route.post("alert/alerts", "AlertController.store");
+Route.delete("/alert/alerts/:id", "AlertController.destroy");

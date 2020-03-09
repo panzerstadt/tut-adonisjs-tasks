@@ -1,9 +1,15 @@
 @layout('master')
 
 @section('content')
+  @if(old('notification'))
+    <div class="notification is-success">
+      {{ old('notification') }}
+    </div>
+  @endif
+
   <div class="box">
     <h2 class="title">New Task</h2>
-    <form action="/tasks" method="POST">
+    <form action="/task/tasks" method="POST">
       {{ csrfField() }}
 
       <div class="field has-addons">
@@ -27,7 +33,6 @@
       <table class="table is-bordered is-striped is-narrow is-fullwidth">
         <thead>
           <tr>
-            <th>SN</th>
             <th>Title</th>
             <th>Action</th> 
           </tr>
@@ -35,24 +40,87 @@
         <tbody>
           @each(task in tasks)
             <tr>
-              <td>
-                {{ ($loop.index + 1) }}
+              <td style="vertical-align: middle;">
+                {{ ($loop.index + 1) + ". " + task.title }}
               </td>
               <td>
-                {{ task.title }}
-              </td>
-              <td>
-                <button class="button is-danger is-outlined">
-                  <span>DELETE</span>
-                  <span class="icon is-small">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                  </span>
-                </button>
+                <form action="{{ '/task/tasks/' + task.id + '?_method=DELETE' }}" method="POST">
+                  {{ csrfField() }}
+
+                  <button class="button is-danger is-outlined">
+                    <span>DELETE</span>
+                    <span class="icon is-small">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </form>
               </td>
             </tr>
           @else
             <tr>
               <td colspan="3" class="has-text-centered">No task created yet!</td>
+            </tr>
+          @endeach
+        </tbody>
+      </table>
+  </div>
+
+  {{--  alerts  --}}
+
+  <div class="box">
+    <h2 class="title">Alerts</h2>
+    <form action="/alert/alerts" method="POST">
+      {{ csrfField() }}
+
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input type="text" class="input" name="alert-title" value="{{ old('alert-title', '') }}" placeholder="Task title">
+        </div>
+        <div class="control">
+          <button type="submit" class="button is-primary">
+            Add Task
+          </button>
+        </div>
+      </div>
+
+      {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('alert-title'), hasErrorFor('alert-title')) }}
+    </form>
+  </div>
+
+  
+
+  <div class="box">
+    <h1 class="title">Alerts List</h1>
+
+      <table class="table is-bordered is-striped is-narrow is-fullwidth">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Action</th> 
+          </tr>
+        </thead>
+        <tbody>
+          @each(alert in alerts)
+            <tr>
+              <td style="vertical-align: middle;">
+                {{ ($loop.index + 1) + ". " + alert['alert-title'] }}
+              </td>
+              <td>
+                <form action="{{ '/alert/alerts/' + alert.id + '?_method=DELETE' }}" method="POST">
+                  {{ csrfField() }}
+
+                  <button class="button is-danger is-outlined">
+                    <span>DELETE</span>
+                    <span class="icon is-small">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          @else
+            <tr>
+              <td colspan="3" class="has-text-centered">No alert created yet!</td>
             </tr>
           @endeach
         </tbody>
